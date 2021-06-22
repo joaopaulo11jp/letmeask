@@ -1,10 +1,10 @@
-import { Button } from './components/Button';
+import { Home } from './pages/Home';
 
 import './services/Firebase';
 
 function App() {
   return (
-    <Button/>
+    <Home/>
   );
 }
 

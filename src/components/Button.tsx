@@ -1,14 +1,12 @@
-import { useState } from "react"
+import { ButtonHTMLAttributes } from "react"
 
-export function Button() {
-    const [counter, setCounter] = useState(0);
+import '../styles/button.scss';
 
-    const increment = () => {
-        setCounter(counter + 1);
-        console.log(counter);
-    }
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>; //Por que que as propriedades do Botão são genéricas?
+
+export function Button(props: ButtonProps) {
 
     return(
-        <button onClick={increment}>{counter}</button>
+        <button className="button" {...props}></button>
     )
 }
