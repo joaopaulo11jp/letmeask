@@ -1,28 +1,16 @@
-import { useHistory } from 'react-router';
-
+import { useContext } from 'react';
 import { Button } from '../components/Button';
-import { firebase, auth } from '../services/Firebase';
+import { Link } from 'react-router-dom';
 
 import ilustrationImg from '../assets/images/illustration.svg'; //webpack importa isso
 import logoImg from '../assets/images/logo.svg';
-import googleImg from '../assets/images/google-icon.svg';
-
 import '../styles/auth.scss';
-import { useContext } from 'react';
+
 import { AuthContext } from '../contexts/AuthContext';
 
-export function Home() {
-    const history = useHistory();
+export function NewRoom() {
     const { user, singInWithGoogle } = useContext(AuthContext);
 
-    async function navigateToNewRoom() {
-        if (!user) {
-            await singInWithGoogle();
-        }
-
-        history.push('/rooms/new');
-    }
-    
     return (
         <div id="page-auth">
             <aside>
@@ -33,13 +21,8 @@ export function Home() {
             <main>
                 <h1>{user?.name}</h1>
                 <div className="main-content">
-                    <img src={logoImg} alt="letmeask" />
-                    <button onClick={navigateToNewRoom} className="create-room">
-                        <img src={googleImg} alt="Logo do Google" />
-                        Crie sua sala com o Google
-                    </button>
-
-                    <div className="separator">ou entre em uma sala</div>
+                    <img src={logoImg} alt="letmeask"/>
+                    <h2>Crie uma nova sala</h2>
 
                     <form>
                         <input 
@@ -48,7 +31,10 @@ export function Home() {
                         />
                     </form>
 
-                    <Button>Entrar na sala</Button>
+                    <Button>Criar sala</Button>
+                    <p>
+                        Quer entrar em uma sala existente? Clique <Link to="/">aqui</Link>.
+                    </p>
                 </div>
             </main>
         </div>
