@@ -1,5 +1,5 @@
 import { Button } from '../components/Button';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import ilustrationImg from '../assets/images/illustration.svg'; //webpack importa isso
 import logoImg from '../assets/images/logo.svg';
@@ -12,14 +12,12 @@ import { database } from '../services/Firebase';
 
 export function NewRoom() {
     const { user } = useAuth();
+    const history = useHistory();
 
     const [newRoom, setNewRoom] = useState('');
 
     async function handleCreateRoom(event: FormEvent) {
         event.preventDefault();
-        console.log('chegou aqui !')
-
-        console.log(newRoom)
 
         if (newRoom.trim() === '') {
             return;
@@ -30,9 +28,9 @@ export function NewRoom() {
         const roomReference = await roomsRef.push({
             title: newRoom,
             authorId: user?.id
-        });
+        }).get();
 
-
+        history.push(`/rooms/${roomReference.key}`)
     }
 
     return (
