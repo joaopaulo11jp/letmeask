@@ -1,19 +1,20 @@
+import { FormEvent, useState } from 'react';
 import { useHistory } from 'react-router';
 
 import { Button } from '../components/Button';
-import { firebase, auth } from '../services/Firebase';
+import { firebase, auth, database } from '../services/Firebase';
 
 import ilustrationImg from '../assets/images/illustration.svg'; //webpack importa isso
 import logoImg from '../assets/images/logo.svg';
 import googleImg from '../assets/images/google-icon.svg';
 
 import '../styles/auth.scss';
-import { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 export function Home() {
     const history = useHistory();
-    const { user, singInWithGoogle } = useContext(AuthContext);
+    const { user, singInWithGoogle } = useAuth();
+    const [roomCode, setRoomCode] = useState('');
 
     async function navigateToNewRoom() {
         if (!user) {
@@ -21,6 +22,23 @@ export function Home() {
         }
 
         history.push('/rooms/new');
+    }
+
+    async function handleJoinRoom(event: FormEvent) {
+        event.preventDefault();
+
+        if(roomCode.trim() === '') {
+            return;
+        }
+
+        const roomRef = await database.ref(`rooms/${roomCode}`).get();
+
+        if (!roomRef.exists()) {
+            alert('Room does not exists.')
+            return;
+        }
+
+        history.push(`/rooms/${roomCode}`);
     }
     
     return (
